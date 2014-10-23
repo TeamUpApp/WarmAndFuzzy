@@ -1,4 +1,4 @@
-package com.example.clazell.smstest;
+package com.teamupapps.warmandfuzzysms;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.Random;
 
@@ -109,6 +112,14 @@ public class MyActivity extends Activity {
             return rootView;
         }
 
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            AdView mAdView = (AdView) getView().findViewById(R.id.ads);
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("75E438EDAAA758CAA23BC51CAEF1F988").build();
+            mAdView.loadAd(adRequest);
+        }
+
         private void search() {
             Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
 
@@ -139,8 +150,13 @@ public class MyActivity extends Activity {
 
         private void nextSMS() {
             Random rand = new Random();
-            int n = rand.nextInt(amountofLL);
-            heading.setText(loveLetters[n] + " ");
+            if (amountofLL > 0) {
+                int n = rand.nextInt(amountofLL);
+                heading.setText(loveLetters[n] + " ");
+            } else {
+                heading.setText("No Messages Found, but I love you!");
+            }
+
         }
 
     }
